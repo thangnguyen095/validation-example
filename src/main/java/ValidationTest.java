@@ -1,7 +1,10 @@
 import oop.MTK2018.validation.Validation;
 import oop.MTK2018.validation.announcer.Announcer;
+import oop.MTK2018.validation.announcer.PopupAnnouncer;
 import oop.MTK2018.validation.announcer.TextAnnouncer;
+import oop.MTK2018.validation.constraint.Length;
 import oop.MTK2018.validation.constraint.NotNull;
+import oop.MTK2018.validation.constraint.Regex;
 import oop.MTK2018.validation.exception.UnsupportedDataType;
 
 import javax.swing.*;
@@ -12,11 +15,15 @@ public class ValidationTest extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JTextField textField1;
-    private JLabel label;
+    private JTextPane textPane1;
 
-    private Announcer announcer = new TextAnnouncer(label);
+    private Announcer announcer = new TextAnnouncer(textPane1);
+    private Announcer ann2 = new PopupAnnouncer();
     private Validation validation = new Validation(announcer);
-    @NotNull
+
+    @NotNull(msg = "Chuỗi không được phép rỗng")
+    @Length(min = 3, msg = "Chiều dài tối thiểu là 3")
+    @Regex(value = "\\d+", msg = "Giá trị không khớp với regex")
     String test;
 
     public ValidationTest() {
@@ -41,7 +48,7 @@ public class ValidationTest extends JDialog {
         test = textField1.getText();
         boolean valid = validation.validate(this);
         if(valid){
-            JOptionPane.showMessageDialog(null,"Validation success!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Kiểm tra thành công!", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
